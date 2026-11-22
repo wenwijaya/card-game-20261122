@@ -1,0 +1,199 @@
+/* Ember Duel — felt table, gold trim, big legible cards. */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  font-family: "Segoe UI", Verdana, sans-serif;
+  background: #101c14;
+  color: #f5eeda;
+  overflow: hidden;
+}
+#app { height: 100vh; display: flex; flex-direction: column; }
+
+/* ---------- top bar ---------- */
+#topbar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 4px 16px; background: #1d2f23; border-bottom: 3px solid #c9a227;
+}
+.brand { font-size: 22px; font-weight: 900; letter-spacing: 3px; color: #ffd76a; text-shadow: 0 2px 0 #7a1f0d; }
+.topbar-right { display: flex; gap: 10px; align-items: center; }
+#turn-banner {
+  font-size: 15px; font-weight: 800; color: #1d2f23; background: #ffd76a;
+  border-radius: 20px; padding: 4px 14px;
+}
+button {
+  font-family: inherit; font-weight: 800; cursor: pointer; border: none;
+  border-radius: 10px; color: #fff; background: #8a5a12;
+  padding: 8px 14px; font-size: 14px; box-shadow: 0 3px 0 #5d3c08;
+}
+button:hover { filter: brightness(1.15); }
+button:active { transform: translateY(2px); box-shadow: none; }
+button:disabled { opacity: 0.45; cursor: default; filter: none; }
+#sound-btn, #help-btn { background: #2e5d3a; box-shadow: 0 3px 0 #1c3d24; }
+
+/* ---------- table ---------- */
+#table {
+  flex: 1; display: flex; flex-direction: column; justify-content: space-between;
+  padding: 4px 18px;
+  background:
+    radial-gradient(ellipse at 50% 0%, #2e6b3e 0%, #1e4d2b 55%, #143722 100%);
+  border-top: 4px solid #7a5a1e;
+}
+.zone { display: flex; flex-direction: column; gap: 2px; }
+.hand { display: flex; gap: 8px; min-height: 108px; align-items: center; justify-content: center; }
+.board { display: flex; gap: 8px; min-height: 108px; align-items: center; justify-content: center; }
+.board-empty { color: #b9d6bd; opacity: 0.65; font-style: italic; font-size: 14px; }
+
+/* ---------- hero panels ---------- */
+.hero {
+  display: flex; align-items: center; gap: 14px;
+  background: rgba(0, 0, 0, 0.35); border: 2px solid #c9a227; border-radius: 12px;
+  padding: 3px 16px; width: 640px; margin: 0 auto;
+}
+.hero .portrait { font-size: 34px; line-height: 1; }
+.hero .hero-name { font-size: 19px; font-weight: 900; }
+.hero .hero-sub { font-size: 12px; color: #d8e8d5; opacity: 0.85; }
+.hero .life {
+  margin-left: auto; display: flex; align-items: center; gap: 6px;
+  font-size: 26px; font-weight: 900; color: #ff6b6b;
+  background: rgba(0, 0, 0, 0.45); border-radius: 10px; padding: 2px 12px;
+  border: 2px solid #ff6b6b;
+}
+.hero .life.low { animation: pulse 0.8s infinite alternate; }
+@keyframes pulse { from { background: rgba(120, 0, 0, 0.5); } to { background: rgba(255, 0, 0, 0.65); } }
+.hero .mana-pill {
+  font-size: 17px; font-weight: 900; color: #8fd8ff;
+  background: rgba(0, 0, 0, 0.45); border: 2px solid #4aa8dd; border-radius: 10px; padding: 2px 10px;
+}
+.hero.foe { border-color: #b0503c; }
+.hero.you { border-color: #4aa8dd; }
+
+/* ---------- cards ---------- */
+.card {
+  width: 100px; height: 122px; border-radius: 10px; position: relative;
+  background: #f7f1dd; color: #221a10; border: 3px solid #8a6d2f;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.55);
+  display: flex; flex-direction: column; align-items: center;
+  padding: 4px 5px; user-select: none;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.card .cost {
+  position: absolute; top: -6px; left: -6px; width: 26px; height: 26px;
+  border-radius: 50%; background: #2b6cb0; color: #fff; border: 2px solid #fff;
+  font-size: 15px; font-weight: 900; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); z-index: 2;
+}
+.card .el-badge {
+  width: 100%; border-radius: 6px; text-align: center; padding: 2px 0;
+  font-size: 12px; font-weight: 900; letter-spacing: 0.5px; color: #fff;
+}
+.card.el-flame .el-badge { background: #c0392b; }
+.card.el-tide .el-badge { background: #2471a3; }
+.card.el-leaf .el-badge { background: #229954; }
+.card.el-stone .el-badge { background: #6e6259; }
+.card.el-flame { border-color: #c0392b; }
+.card.el-tide { border-color: #2471a3; }
+.card.el-leaf { border-color: #229954; }
+.card.el-stone { border-color: #6e6259; }
+.card .art { font-size: 24px; line-height: 1.05; margin-top: 1px; }
+.card .cname { font-size: 11px; font-weight: 900; text-align: center; line-height: 1.1; margin-top: 1px; }
+.card .ctext { font-size: 10px; text-align: center; color: #5a4a30; line-height: 1.1; margin-top: 1px; flex: 1; }
+.card .stats {
+  display: flex; justify-content: space-between; width: 100%; margin-top: auto;
+  font-size: 15px; font-weight: 900;
+}
+.card .atk { color: #b03a00; }
+.card .hp { color: #1e6b34; }
+.card .trait-tag {
+  font-size: 10px; font-weight: 900; color: #7a5a12; background: #ffe9a8;
+  border-radius: 4px; padding: 1px 5px; margin-top: 1px;
+}
+
+/* hand cards: playable lift + glow */
+.you-hand .card { cursor: pointer; }
+.you-hand .card:hover { transform: translateY(-12px) scale(1.05); box-shadow: 0 10px 16px rgba(0, 0, 0, 0.6); }
+.you-hand .card.selected {
+  transform: translateY(-14px) scale(1.06);
+  outline: 4px solid #ffd76a; box-shadow: 0 0 18px #ffd76a;
+}
+.you-hand .card.unaffordable { filter: grayscale(0.7) brightness(0.75); cursor: not-allowed; }
+
+/* board fighters */
+.board .card { cursor: default; }
+.board .card.can-attack { cursor: pointer; outline: 3px solid #7dff9b; box-shadow: 0 0 14px #7dff9b; }
+.board .card.can-attack:hover { transform: scale(1.05); }
+.board .card.attacking { outline: 4px solid #ffd76a; box-shadow: 0 0 18px #ffd76a; transform: scale(1.06); }
+.board .card.exhausted { filter: brightness(0.72); }
+.board .card.targetable { cursor: crosshair; outline: 3px dashed #ff5b5b; }
+.board .card.targetable:hover { transform: scale(1.07); box-shadow: 0 0 16px #ff5b5b; }
+.board .card.just-played { animation: dropin 0.35s ease; }
+@keyframes dropin { from { transform: translateY(-26px) scale(0.8); opacity: 0.2; } to { transform: none; opacity: 1; } }
+.card .sleep { position: absolute; top: 2px; right: 4px; font-size: 15px; }
+
+/* opponent hand: card backs */
+.card-back {
+  width: 66px; height: 88px; border-radius: 8px;
+  background: repeating-linear-gradient(45deg, #7a1f0d 0 10px, #a8321f 10px 20px);
+  border: 3px solid #ffd76a; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 30px; color: #ffd76a;
+}
+.foe-hand { min-height: 98px; }
+
+/* ---------- middle row ---------- */
+#mid-row { display: flex; align-items: center; gap: 16px; justify-content: center; }
+#log {
+  width: 460px; height: 48px; overflow: hidden; font-size: 12px; line-height: 1.35;
+  background: rgba(0, 0, 0, 0.35); border-radius: 8px; padding: 5px 10px; color: #e8f2e4;
+}
+#log b { color: #ffd76a; }
+#mid-controls { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+#mana-stone { font-size: 16px; font-weight: 900; color: #8fd8ff; letter-spacing: 1px; }
+#end-turn-btn { background: #c0392b; box-shadow: 0 3px 0 #7a1f0d; font-size: 16px; padding: 10px 22px; }
+#deck-pile {
+  width: 64px; height: 88px; border-radius: 8px; border: 3px solid #ffd76a;
+  background: repeating-linear-gradient(45deg, #1d4d2b 0 10px, #2e6b3e 10px 20px);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 900; color: #ffd76a; text-align: center;
+}
+
+/* ---------- hint bar ---------- */
+#hintbar {
+  background: #1d2f23; border-top: 3px solid #c9a227;
+  padding: 6px 16px; font-size: 13.5px; color: #cfe3cb; text-align: center;
+}
+#hintbar b { color: #ffd76a; }
+
+/* ---------- overlays ---------- */
+.overlay {
+  position: fixed; inset: 0; background: rgba(8, 18, 10, 0.82);
+  display: flex; align-items: center; justify-content: center; z-index: 50;
+}
+.hidden { display: none !important; }
+.panel {
+  background: linear-gradient(160deg, #1e4d2b, #122e1a);
+  border: 4px solid #c9a227; border-radius: 18px; padding: 26px 34px;
+  max-width: 620px; text-align: center; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7);
+}
+.title-panel h1 {
+  font-size: 56px; letter-spacing: 6px; color: #ffd76a;
+  text-shadow: 0 3px 0 #7a1f0d, 0 0 26px rgba(255, 120, 40, 0.55);
+}
+.title-ember { font-size: 54px; }
+.tagline { font-size: 17px; color: #cfe3cb; margin: 6px 0 16px; }
+.title-rules { text-align: left; font-size: 14.5px; line-height: 1.5; margin: 0 auto 18px; max-width: 520px; }
+.title-rules div { margin: 5px 0; }
+.rule-ico { font-size: 17px; }
+#start-btn { font-size: 22px; padding: 14px 34px; background: #c0392b; box-shadow: 0 4px 0 #7a1f0d; }
+.title-foot { margin-top: 14px; font-size: 12.5px; color: #a9c8a9; }
+.help-panel { text-align: left; max-width: 640px; }
+.help-panel h2 { text-align: center; color: #ffd76a; margin-bottom: 12px; }
+.help-panel ul { font-size: 14.5px; line-height: 1.55; padding-left: 20px; }
+.help-panel li { margin: 6px 0; }
+.help-panel button { display: block; margin: 16px auto 0; }
+.end-panel h1 { font-size: 52px; letter-spacing: 4px; }
+.end-panel.win h1 { color: #ffd76a; text-shadow: 0 0 26px rgba(255, 200, 60, 0.8); }
+.end-panel.loss h1 { color: #9db8a4; }
+.end-ico { font-size: 64px; }
+#end-sub { font-size: 17px; margin: 8px 0; color: #d8e8d5; }
+#end-stats { font-size: 14px; color: #a9c8a9; margin-bottom: 18px; }
+#again-btn { font-size: 19px; padding: 12px 28px; background: #2e7d32; box-shadow: 0 4px 0 #1b4d1f; }

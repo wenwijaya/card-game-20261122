@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ember Duel — a tactical card battler</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app">
+  <header id="topbar">
+    <div class="brand">🔥 EMBER DUEL 🔥</div>
+    <div class="topbar-right">
+      <span id="turn-banner">Your turn</span>
+      <button id="sound-btn" type="button" title="Toggle sound (M)">♪ Sound: On</button>
+      <button id="help-btn" type="button" title="How to play (H)">? Help</button>
+    </div>
+  </header>
+
+  <main id="table">
+    <section id="foe-zone" class="zone">
+      <div id="foe-hero" class="hero foe"></div>
+      <div id="foe-hand" class="hand foe-hand" aria-label="Opponent hand"></div>
+      <div id="foe-board" class="board" aria-label="Opponent table"></div>
+    </section>
+
+    <section id="mid-row">
+      <div id="log" aria-live="polite"></div>
+      <div id="mid-controls">
+        <div id="mana-stone" title="Your mana crystals"></div>
+        <button id="end-turn-btn" type="button">End Turn ⏎</button>
+      </div>
+      <div id="deck-pile" title="Your deck"></div>
+    </section>
+
+    <section id="you-zone" class="zone">
+      <div id="you-board" class="board" aria-label="Your table"></div>
+      <div id="you-hand" class="hand you-hand" aria-label="Your hand"></div>
+      <div id="you-hero" class="hero you"></div>
+    </section>
+  </main>
+
+  <footer id="hintbar">
+    <span id="hint">Click a card to play it · Click one of your fighters, then an enemy, to attack · Keys 1–5 play cards · A attacks · N ends turn</span>
+  </footer>
+
+  <div id="title-screen" class="overlay">
+    <div class="panel title-panel">
+      <div class="title-ember">🔥</div>
+      <h1>EMBER DUEL</h1>
+      <p class="tagline">A tactical card battler of flame, tide, leaf &amp; stone</p>
+      <div class="title-rules">
+        <div><span class="rule-ico">❤️</span> Reduce the Cinder Warden from <b>30 life to 0</b> to win.</div>
+        <div><span class="rule-ico">🔷</span> Mana grows each turn. Cards cost mana to play.</div>
+        <div><span class="rule-ico">⚔️</span> Fighters attack once a turn. Flame beats Leaf, Leaf beats Stone, Stone beats Tide, Tide beats Flame — advantage deals +2.</div>
+        <div><span class="rule-ico">🛡️</span> Guards must be attacked first. Swift fighters strike the turn they arrive.</div>
+      </div>
+      <button id="start-btn" type="button">⚔️ Start Duel</button>
+      <p class="title-foot">Mouse + keyboard · 1–5 play cards · A attack · N end turn · H help</p>
+    </div>
+  </div>
+
+  <div id="help-screen" class="overlay hidden">
+    <div class="panel help-panel">
+      <h2>How to play Ember Duel</h2>
+      <ul>
+        <li><b>Goal:</b> bring the Cinder Warden's life from 30 to 0 before yours reaches 0.</li>
+        <li><b>Mana:</b> you gain 1 mana crystal each turn (up to 10). Playing a card spends its cost.</li>
+        <li><b>Fighters:</b> cards stay on the table and attack once per turn. A fighter cannot attack the turn it is played, unless it is <b>Swift</b>.</li>
+        <li><b>Guard:</b> while the enemy has a Guard fighter, you must attack a Guard first.</li>
+        <li><b>Elements:</b> 🔥 Flame beats 🍃 Leaf, 🍃 Leaf beats 🪨 Stone, 🪨 Stone beats 💧 Tide, 💧 Tide beats 🔥 Flame. Attacking a weaker element deals +2 damage.</li>
+        <li><b>Traits:</b> <b>Ember</b> — deals 1 damage when played. <b>Heal</b> — restores life when played.</li>
+        <li><b>Draw:</b> you draw a card each turn. An empty deck deals 1 fatigue damage per draw.</li>
+        <li><b>Controls:</b> mouse — click a hand card to play it, click your fighter then a target to attack. Keyboard — 1–5 select a hand card, Enter plays it, A arms an attacker, Tab cycles targets, N ends turn, M sound, H help, Esc cancels.</li>
+      </ul>
+      <button id="help-close-btn" type="button">Close</button>
+    </div>
+  </div>
+
+  <div id="end-screen" class="overlay hidden">
+    <div class="panel end-panel">
+      <div id="end-ico" class="end-ico">🏆</div>
+      <h1 id="end-title">VICTORY!</h1>
+      <p id="end-sub">The Cinder Warden falls. The embers are yours.</p>
+      <p id="end-stats"></p>
+      <button id="again-btn" type="button">🔄 Play Again</button>
+    </div>
+  </div>
+</div>
+
+<script src="src/cards.js"></script>
+<script src="src/deck.js"></script>
+<script src="src/engine.js"></script>
+<script src="src/ai.js"></script>
+<script src="src/render.js"></script>
+<script src="src/shots.js"></script>
+<script src="src/main.js"></script>
+</body>
+</html>
